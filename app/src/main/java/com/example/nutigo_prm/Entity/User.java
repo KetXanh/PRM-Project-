@@ -8,8 +8,6 @@ import androidx.room.PrimaryKey;
 @Entity
 public class User {
 
-
-
     @PrimaryKey
     @ColumnInfo(name = "username")
     @NonNull
@@ -18,13 +16,23 @@ public class User {
     @ColumnInfo(name = "password")
     public String password;
 
-    public User(String username, String password) {
+    @ColumnInfo(name = "email")
+    public String email;
+
+    @ColumnInfo(name = "role") // ✅ THÊM MỚI
+    public String role;
+
+    public User(String username, String password, String email, String role) {
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.role = role;
     }
+
     public User() {
         this.username = "username";
         this.password = "password";
+        this.email = "email";
+        this.role = "customer";
     }
-
 }

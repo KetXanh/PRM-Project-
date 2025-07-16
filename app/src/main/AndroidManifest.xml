@@ -15,7 +15,7 @@
         android:theme="@style/Theme.NutiGo_PRM"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.AuthsActivity"
+            android:name=".Activity.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +24,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activity.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -26,8 +26,8 @@ public class UserViewModel extends AndroidViewModel {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    public LiveData<User> getUserByUsernameAndPassword(String username, String password) {
-        return userDao.getProductByName(username, password);
+    public LiveData<User> getUserByEmailAndPassword(String email, String password) {
+        return userDao.getAccountByEmail(email, password);
     }
 
     public void insert(User user) {

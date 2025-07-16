@@ -30,6 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class, "shopping.sqlite")
                             .addMigrations(MIGRATION_1_2)
                             .build();
+                    populateInitialData(INSTANCE);
                 }
             }
         }
@@ -41,11 +42,22 @@ public abstract class AppDatabase extends RoomDatabase {
             db.execSQL(
                     "CREATE TABLE IF NOT EXISTS `orders` (" +
                             "`id`          INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                            "`username`    TEXT, " +
+                            "`email`    TEXT, " +
                     "`created_at`  INTEGER NOT NULL, " +
                             "`total_price` REAL    NOT NULL)"
             );
         }
     };
+
+    private static void populateInitialData(AppDatabase db) {
+        new Thread(() -> {
+            UserDao userDao = db.userDao();
+            User admin = userDao.getAccountByEmail("admin@gmail.com", "admin123").getValue();
+            if (admin == null) {
+                User newAdmin = new User("admin", "admin123", "admin@gmail.com", "admin");
+                userDao.insert(newAdmin);
+            }
+        }).start();
+    }
 
 }

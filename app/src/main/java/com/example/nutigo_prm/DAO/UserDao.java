@@ -13,8 +13,8 @@ import com.example.nutigo_prm.Entity.User;
 public interface UserDao {
     @Insert
     void insert(User user);
-    @Query("SELECT * FROM User WHERE username = :name and password =:pass")
-    LiveData<User> getProductByName(String name, String pass);
+    @Query("SELECT * FROM User WHERE email = :email and password =:pass")
+    LiveData<User> getAccountByEmail(String email, String pass);
 
     @Update
     void update(User user);
