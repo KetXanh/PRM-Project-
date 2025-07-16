@@ -3,7 +3,6 @@ package com.example.nutigo_prm.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -12,13 +11,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.nutigo_prm.Adapter.ProductAdapter;
 import com.example.nutigo_prm.DataHelper.DataHelper;
-import com.example.nutigo_prm.Model.Product;
+import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

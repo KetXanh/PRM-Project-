@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Activity.ProductDetailActivity;
 import com.example.nutigo_prm.R;
-import com.example.nutigo_prm.Model.Product;
+import com.example.nutigo_prm.Entity.Product;
 
 import java.util.List;
 

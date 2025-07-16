@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import com.example.nutigo_prm.DataHelper.DataHelper;
-import com.example.nutigo_prm.Model.Feedback;
+import com.example.nutigo_prm.Entity.Feedback;
 import com.example.nutigo_prm.R;
 
 import java.util.List;

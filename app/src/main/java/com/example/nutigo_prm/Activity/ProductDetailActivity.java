@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Adapter.FeedbackAdapter;
 import com.example.nutigo_prm.DataHelper.DataHelper;
-import com.example.nutigo_prm.Model.Feedback;
+import com.example.nutigo_prm.Entity.Feedback;
 import com.example.nutigo_prm.R;
 import java.util.ArrayList;
 import java.util.List;
