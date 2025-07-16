@@ -68,10 +68,11 @@ public class LoginActivity extends AppCompatActivity {
 //                        finish();
                         Toast.makeText(this, "Đăng nhập Admin thành công", Toast.LENGTH_SHORT).show();
                     }else{
-//                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-//                        finish();
-                        Toast.makeText(this, "Đăng nhập Customer thành công", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        finish();
                     }
+                    Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+
 
 //
                 } else {
