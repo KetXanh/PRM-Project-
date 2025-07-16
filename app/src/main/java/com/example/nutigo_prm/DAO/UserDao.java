@@ -15,7 +15,8 @@ public interface UserDao {
     void insert(User user);
     @Query("SELECT * FROM User WHERE email = :email and password =:pass")
     LiveData<User> getAccountByEmail(String email, String pass);
-
+    @Query("SELECT * FROM User WHERE email = :email LIMIT 1")
+    User getUserByEmail(String email); // Dùng cho AppDatabase
     @Update
     void update(User user);
 
