@@ -52,7 +52,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static void populateInitialData(AppDatabase db) {
         new Thread(() -> {
             UserDao userDao = db.userDao();
-            User admin = userDao.getAccountByEmail("admin@gmail.com", "admin123").getValue();
+            User admin = userDao.getUserByEmail("admin@gmail.com");
             if (admin == null) {
                 User newAdmin = new User("admin", "admin123", "admin@gmail.com", "admin");
                 userDao.insert(newAdmin);
