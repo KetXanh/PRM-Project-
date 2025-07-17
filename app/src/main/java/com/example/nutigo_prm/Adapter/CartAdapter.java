@@ -1,0 +1,5 @@
+package com.example.nutigo_prm.Adapter;
+
+public class CartAdapter {
+
+}
