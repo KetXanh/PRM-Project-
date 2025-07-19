@@ -12,9 +12,14 @@ public class Order {
     public long createdAt;
     public double total;
 
-    public Order(String username, long createdAt, double total) {
+    public String status;
+
+
+    public Order(String username, long createdAt, double total, String status) {
         this.username = username;
         this.createdAt = createdAt;
         this.total = total;
+        this.status = status;
+
     }
 }
