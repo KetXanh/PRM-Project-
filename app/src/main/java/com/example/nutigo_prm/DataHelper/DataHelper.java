@@ -69,8 +69,59 @@ public class DataHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_FEEDBACK_TABLE);
 
         db.execSQL(CREATE_TABLE_CART);
+        // Tạo bảng Orders
+        String CREATE_ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS Orders (" +
+                "order_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "customer_name TEXT," +
+                "phone TEXT," +
+                "address TEXT," +
+                "note TEXT," +
+                "order_date INTEGER)";
+        db.execSQL(CREATE_ORDERS_TABLE);
+
+// Tạo bảng OrderItems
+        String CREATE_ORDER_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS OrderItems (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "order_id INTEGER," +
+                "product_id INTEGER," +
+                "quantity INTEGER," +
+                "price REAL," +
+                "FOREIGN KEY(order_id) REFERENCES Orders(order_id))";
+        db.execSQL(CREATE_ORDER_ITEMS_TABLE);
+
 
     }
+    public boolean createOrder(String name, String phone, String address, String note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues orderValues = new ContentValues();
+            orderValues.put("customer_name", name);
+            orderValues.put("phone", phone);
+            orderValues.put("address", address);
+            orderValues.put("note", note);
+            orderValues.put("order_date", System.currentTimeMillis());
+
+            long orderId = db.insert("Orders", null, orderValues);
+            if (orderId == -1) return false;
+
+            List<Cart> cartItems = getAllCartItems();
+            for (Cart item : cartItems) {
+                ContentValues itemValues = new ContentValues();
+                itemValues.put("order_id", orderId);
+                itemValues.put("product_id", item.getProductId());
+                itemValues.put("quantity", item.getQuantity());
+                itemValues.put("price", item.getPrice());
+                db.insert("OrderItems", null, itemValues);
+            }
+
+            db.setTransactionSuccessful();
+            return true;
+        } finally {
+            db.endTransaction();
+        }
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -1,5 +1,6 @@
 package com.example.nutigo_prm.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -58,12 +59,20 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
 
     private void handleCheckout() {
         btnCheckout.setOnClickListener(v -> {
-            // TODO: xử lý đặt hàng
+            Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
+            startActivity(intent);
         });
     }
+
 
     @Override
     public void onCartUpdated(List<Cart> updatedCartItems) {
         updateTotal(updatedCartItems);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCartItems();
+    }
+
 }
