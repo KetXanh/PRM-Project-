@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:elevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <!-- Ảnh sản phẩm -->
+        <ImageView
+            android:id="@+id/imageProduct"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_cart_foreground"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Tên sản phẩm -->
+        <TextView
+            android:id="@+id/textProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tên sản phẩm"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/imageProduct"
+            app:layout_constraintTop_toTopOf="@id/imageProduct"
+            app:layout_constraintEnd_toStartOf="@id/btnRemove"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginStart="8dp" />
+
+        <!-- Giá sản phẩm -->
+        <TextView
+
+            android:id="@+id/textProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100.000₫"
+            android:textColor="#FF5722"
+            app:layout_constraintStart_toStartOf="@id/textProductName"
+            app:layout_constraintTop_toBottomOf="@id/textProductName" />
+
+        <!-- Nút "-" -->
+        <Button
+            android:id="@+id/btnDecrease"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/green"
+            android:textSize="18sp"
+            android:padding="0dp"
+            android:text=" - "
+            app:layout_constraintTop_toBottomOf="@id/textProductPrice"
+            app:layout_constraintStart_toStartOf="@id/textProductName" />
+
+        <!-- Text Số lượng -->
+        <TextView
+            android:id="@+id/textQuantity"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:text="1"
+            android:gravity="center"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/btnDecrease"
+            app:layout_constraintStart_toEndOf="@id/btnDecrease" />
+
+        <!-- Nút "+" -->
+        <Button
+            android:id="@+id/btnIncrease"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:textColor="@color/white"
+            android:padding="0dp"
+            android:textSize="18sp"
+            android:backgroundTint="@color/green"
+            android:text=" + "
+            app:layout_constraintTop_toTopOf="@id/btnDecrease"
+            app:layout_constraintStart_toEndOf="@id/textQuantity" />
+
+        <!-- Nút xóa -->
+        <ImageButton
+            android:id="@+id/btnRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_delete"
+            android:contentDescription="Xoá"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -117,6 +117,17 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp" />
 
+            <Button
+                android:id="@+id/btnAddToCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thêm giỏ hàng"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/green"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:drawableStart="@android:drawable/ic_input_add"
+                android:padding="12dp"/>
             <!-- Nút viết đánh giá -->
             <Button
                 android:id="@+id/btnWriteFeedback"

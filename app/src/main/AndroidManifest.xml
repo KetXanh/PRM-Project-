@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,16 +15,22 @@
         android:theme="@style/Theme.NutiGo_PRM"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.ProductDetailActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.HomeActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
+        <activity android:name=".Activity.CartActivity"
+            android:exported="false" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

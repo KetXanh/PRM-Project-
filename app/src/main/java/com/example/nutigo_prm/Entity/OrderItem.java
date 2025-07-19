@@ -1,26 +1,22 @@
 package com.example.nutigo_prm.Entity;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class CartItem {
+public class OrderItem {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @ColumnInfo(name = "username")
-    public String username;
-
-    @ColumnInfo(name = "productId")
+    public int orderId;
     public int productId;
-
-    @ColumnInfo(name = "quantity")
     public int quantity;
+    public double price;
 
-    public CartItem(String username, int productId, int quantity) {
-        this.username = username;
+    public OrderItem(int orderId, int productId, int quantity, double price) {
+        this.orderId = orderId;
         this.productId = productId;
         this.quantity = quantity;
+        this.price = price;
     }
 }

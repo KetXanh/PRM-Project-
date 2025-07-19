@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Adapter.FeedbackAdapter;
 import com.example.nutigo_prm.DataHelper.DataHelper;
 import com.example.nutigo_prm.Entity.Feedback;
 import com.example.nutigo_prm.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TextView tvName, tvCategory, tvDescription, tvPrice, tvStock, tvEmptyFeedback;
     private ImageView imgProduct;
     private ListView listViewFeedback;
-    private Button btnAddFeedback;
+    private Button btnAddFeedback, btnAddToCart, btnWriteFeedback;
 
     private DataHelper dbHelper;
     private int productId;
@@ -40,10 +42,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         imgProduct = findViewById(R.id.imgProduct);
         listViewFeedback = findViewById(R.id.listViewFeedback);
         tvEmptyFeedback = findViewById(R.id.tvEmptyFeedback);
+        btnAddToCart = findViewById(R.id.btnAddToCart);  // Thêm giỏ hàng
+        btnWriteFeedback = findViewById(R.id.btnWriteFeedback);  // Viết đánh giá
 
         dbHelper = new DataHelper(this);
 
-        // Lấy product ID
         if (getIntent().hasExtra("product_id")) {
             productId = getIntent().getIntExtra("product_id", -1);
             loadProductDetail(productId);
@@ -53,21 +56,28 @@ public class ProductDetailActivity extends AppCompatActivity {
             finish();
         }
 
-        // Nhấn vào để thêm feedback mới
-        listViewFeedback.setOnItemClickListener(null); // tránh lỗi click feedback
-
-        listViewFeedback.setOnItemLongClickListener((parent, view, position, id) -> {
-            // Tùy chọn sửa nhanh nếu muốn thêm
-            return true;
-        });
-
-        // Nhấn vào phần trống để thêm mới feedback
-        tvEmptyFeedback.setOnClickListener(v -> showAddFeedbackDialog());
-
-
-        Button btnWriteFeedback = findViewById(R.id.btnWriteFeedback);
         btnWriteFeedback.setOnClickListener(v -> showAddFeedbackDialog());
 
+        tvEmptyFeedback.setOnClickListener(v -> showAddFeedbackDialog());
+
+        // Thêm vào giỏ hàng
+        btnAddToCart.setOnClickListener(v -> {
+            Cursor cursor = dbHelper.getProductById(productId);
+            if (cursor != null && cursor.moveToFirst()) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
+                String image = cursor.getString(cursor.getColumnIndexOrThrow("image"));
+                int quantity = 1;
+
+                long result = dbHelper.insertOrUpdateCart(productId, name, price, quantity, image);
+                if (result != -1) {
+                    Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Thêm thất bại hoặc sản phẩm đã có trong giỏ", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (cursor != null) cursor.close();
+        });
     }
 
     private void loadProductDetail(int id) {
