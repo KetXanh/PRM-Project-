@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.ViewModel.UserViewModel;
 
@@ -72,9 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
                     Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    Constanst.user = user.email;
 
-
-//
                 } else {
                     Toast.makeText(this, "Email hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
                 }

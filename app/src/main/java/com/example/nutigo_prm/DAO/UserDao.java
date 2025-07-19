@@ -20,6 +20,11 @@ public interface UserDao {
     @Update
     void update(User user);
 
+    @Query("SELECT * FROM User WHERE email = :email LIMIT 1")
+    LiveData<User> getProfileByEmail(String email);
+
+    @Query("UPDATE User SET username = :newUsername WHERE email = :email")
+    void updateUsernameByEmail(String email, String newUsername);
 
 }
 

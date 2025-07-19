@@ -30,6 +30,10 @@ public class UserViewModel extends AndroidViewModel {
         return userDao.getAccountByEmail(email, password);
     }
 
+    public LiveData<User> getProfile(String email) {
+        return userDao.getProfileByEmail(email);
+    }
+
     public void insert(User user) {
         executorService.execute(() -> userDao.insert(user));
     }
@@ -37,4 +41,9 @@ public class UserViewModel extends AndroidViewModel {
     public void update(User user) {
         executorService.execute(() -> userDao.update(user));
     }
+
+    public void updateUsernameByEmail(String email, String newUsername) {
+        executorService.execute(() -> userDao.updateUsernameByEmail(email, newUsername));
+    }
+
 }

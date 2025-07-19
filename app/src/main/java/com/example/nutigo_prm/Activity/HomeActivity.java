@@ -89,17 +89,22 @@ public class HomeActivity extends AppCompatActivity {
 
         // Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
-        bottomNavigationView.setOnItemReselectedListener(item -> {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_home) {
-                // Already on home, do nothing
+                return true; // Đã ở trang chủ
             } else if (id == R.id.nav_cart) {
                 Toast.makeText(this, "Giỏ hàng đang phát triển", Toast.LENGTH_SHORT).show();
+                return true;
             } else if (id == R.id.nav_order) {
                 Toast.makeText(this, "Đơn hàng đang phát triển", Toast.LENGTH_SHORT).show();
+                return true;
             } else if (id == R.id.nav_settings) {
-                Toast.makeText(this, "Cài đặt đang phát triển", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
             }
+            return false;
         });
     }
 
