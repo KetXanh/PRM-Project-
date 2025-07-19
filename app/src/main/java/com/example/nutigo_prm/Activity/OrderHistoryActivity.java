@@ -2,6 +2,7 @@ package com.example.nutigo_prm.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
@@ -56,9 +57,11 @@ public class OrderHistoryActivity extends AppCompatActivity {
         ordersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderAdapter = new OrderAdapter(new ArrayList<>());
         ordersRecyclerView.setAdapter(orderAdapter);
-
+        Log.d("OrderHistory", "User email: " + userEmail);
         // Fetch orders from ViewModel
         orderViewModel.getOrdersByUserEmail(userEmail).observe(this, orders -> {
+            Log.d("OrderHistory", "ỏdorder"+orders);
+
             if (orders != null && !orders.isEmpty()) {
                 orderAdapter.updateOrders(orders);
             } else {

@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            userViewModel.getUserByEmailAndPassword(username, password).observe(this, user -> {
+            userViewModel.getProfile(username).observe(this, user -> {
                 if (user != null) {
                     Toast.makeText(this, "Tên người dùng đã tồn tại", Toast.LENGTH_SHORT).show();
                 } else {

@@ -19,7 +19,7 @@
             android:name=".Activity.CheckoutActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ProductDetailActivity"
+            android:name=".Activity.OrderHistoryActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.HomeActivity"
@@ -41,6 +41,9 @@
             android:exported="false" />
         <activity
             android:name=".Activity.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

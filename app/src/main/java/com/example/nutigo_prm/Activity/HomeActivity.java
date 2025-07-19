@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.nutigo_prm.Adapter.ProductAdapter;
 import com.example.nutigo_prm.Adapter.SliderAdapter;
+import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.DataHelper.DataHelper;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
@@ -96,12 +97,10 @@ public class HomeActivity extends AppCompatActivity {
             } else if (id == R.id.nav_cart) {
                 startActivity(new Intent(this, CartActivity.class));
                 return true;
-            } else if (id == R.id.nav_order) {
-                Toast.makeText(this, "Đơn hàng đang phát triển", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (id == R.id.nav_settings) {
-                Toast.makeText(this, "Cài đặt đang phát triển", Toast.LENGTH_SHORT).show();
-                return true;
+            }  else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("USER_EMAIL", Constanst.user);
+                startActivity(intent);
             }
             return false;
         });

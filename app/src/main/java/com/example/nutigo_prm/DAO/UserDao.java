@@ -11,6 +11,7 @@ import com.example.nutigo_prm.Entity.User;
 
 @Dao
 public interface UserDao {
+
     @Insert
     void insert(User user);
     @Query("SELECT * FROM User WHERE email = :email and password =:pass")

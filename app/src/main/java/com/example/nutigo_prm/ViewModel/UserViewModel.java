@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 
 
 import com.example.nutigo_prm.DAO.UserDao;

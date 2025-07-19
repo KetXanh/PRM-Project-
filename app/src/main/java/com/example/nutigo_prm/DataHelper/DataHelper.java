@@ -72,7 +72,7 @@ public class DataHelper extends SQLiteOpenHelper {
         // Tạo bảng Orders
         String CREATE_ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS Orders (" +
                 "order_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "customer_name TEXT," +
+                "username TEXT," +
                 "phone TEXT," +
                 "address TEXT," +
                 "note TEXT," +
@@ -94,12 +94,12 @@ public class DataHelper extends SQLiteOpenHelper {
 
 
     }
-    public boolean createOrder(String name, String phone, String address, String note) {
+    public boolean createOrder(String userEmail, String phone, String address, String note) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
             ContentValues orderValues = new ContentValues();
-            orderValues.put("customer_name", name);
+            orderValues.put("username", userEmail);
             orderValues.put("phone", phone);
             orderValues.put("address", address);
             orderValues.put("note", note);
