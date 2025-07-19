@@ -9,25 +9,27 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.nutigo_prm.DAO.OrderDao;
 import com.example.nutigo_prm.DAO.UserDao;
+import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.Entity.User;
 
 
-@Database(entities = { User.class}, version = 2)
+@Database(entities = { User.class, Order.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
 //    public abstract ProductDao productDao();
     public abstract UserDao userDao();
 //    public abstract CartItemDao cartItemDao();
-//    public abstract OrderDao orderDao();
+    public abstract OrderDao orderDao();
 
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    AppDatabase.class, "shopping.sqlite")
+                                    AppDatabase.class, "nutigo_database")
                             .addMigrations(MIGRATION_1_2)
                             .build();
                     populateInitialData(INSTANCE);
