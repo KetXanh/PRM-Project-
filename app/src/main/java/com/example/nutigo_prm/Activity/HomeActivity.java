@@ -28,7 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class
+HomeActivity extends AppCompatActivity {
 
     private ListView listView;
     private SearchView searchView;
@@ -83,11 +84,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // FAB add product
-        FloatingActionButton fab = findViewById(R.id.fabAddProduct);
-        fab.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, AddProductActivity.class)));
 
-        // Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnItemReselectedListener(item -> {
             int id = item.getItemId();

@@ -4,19 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#FF0000FF</color>
     <color name="colorPrimary">#3F51B5</color>
-
-    <!-- Accent color for FAB and interactive elements -->
     <color name="colorAccent">#FF4081</color>
-
-    <!-- Darker shade of accent for ripple effects -->
     <color name="colorAccentDark">#C51162</color>
-
-    <!-- Light background for the main layout -->
     <color name="background_light">#F5F5F5</color>
-
-    <!-- Secondary text color for empty state and borders -->
     <color name="text_secondary">#666666</color>
-
-    <!-- Color for bottom navigation item icons and text -->
     <color name="bottom_nav_item_color">@android:color/white</color>
+
 </resources>

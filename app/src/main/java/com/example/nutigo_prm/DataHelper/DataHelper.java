@@ -128,7 +128,6 @@ public class DataHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_PRODUCTS, COLUMN_PRODUCT_ID + " = ?", new String[]{String.valueOf(productId)});
     }
-
     public Cursor getFeedbacksByProductId(int productId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_FEEDBACKS + " WHERE " + COLUMN_FEEDBACK_PRODUCT_ID + " = ?", new String[]{String.valueOf(productId)});
