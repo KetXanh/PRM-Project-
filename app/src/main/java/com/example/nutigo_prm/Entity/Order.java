@@ -8,21 +8,13 @@ public class Order {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public String orderId;
-    public String userEmail;
-    public String status;
-    public long createdAt;  // thời gian tạo (milisecond)
-    public double totalPrice;
+    public String username;
+    public long createdAt; // thời gian tạo đơn
+    public double total;
 
-    // Constructor có tham số
-    public Order(String orderId, String userEmail, String status, long createdAt, double totalPrice) {
-        this.orderId = orderId;
-        this.userEmail = userEmail;
-        this.status = status;
+    public Order(String username, long createdAt, double total) {
+        this.username = username;
         this.createdAt = createdAt;
-        this.totalPrice = totalPrice;
+        this.total = total;
     }
-
-    // Constructor mặc định (bắt buộc với Room nếu dùng)
-    public Order() {}
 }

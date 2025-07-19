@@ -30,6 +30,8 @@
                 app:searchIcon="@android:drawable/ic_menu_search" />
 
             <!-- Promotional Slider -->
+
+            <!-- Category Spinner -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/sliderViewPager"
                 android:layout_width="match_parent"
@@ -39,7 +41,6 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
 
-            <!-- Category Spinner -->
             <Spinner
                 android:id="@+id/spinnerCategory"
                 android:layout_width="match_parent"

@@ -4,7 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#FF0000FF</color>
     <color name="colorPrimary">#3F51B5</color>
-
+    <color name="origin">#FFF3E0</color>
+    <color name="origin1">#FF5722</color>
+    <color name="green">#06923E</color>
     <!-- Accent color for FAB and interactive elements -->
     <color name="colorAccent">#FF4081</color>
 
@@ -19,4 +21,6 @@
 
     <!-- Color for bottom navigation item icons and text -->
     <color name="bottom_nav_item_color">@android:color/white</color>
+
+
 </resources>

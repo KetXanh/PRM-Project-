@@ -92,20 +92,20 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_home) {
-                return true; // Đã ở trang chủ
+                return true; // Đã ở Home
             } else if (id == R.id.nav_cart) {
-                Toast.makeText(this, "Giỏ hàng đang phát triển", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, CartActivity.class));
                 return true;
             } else if (id == R.id.nav_order) {
                 Toast.makeText(this, "Đơn hàng đang phát triển", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (id == R.id.nav_settings) {
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                startActivity(intent);
+                Toast.makeText(this, "Cài đặt đang phát triển", Toast.LENGTH_SHORT).show();
                 return true;
             }
             return false;
         });
+
     }
 
     private void setupCategorySpinner() {
