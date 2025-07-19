@@ -79,6 +79,7 @@ public class DataHelper extends SQLiteOpenHelper {
                 "order_date INTEGER)";
         db.execSQL(CREATE_ORDERS_TABLE);
 
+
 // Tạo bảng OrderItems
         String CREATE_ORDER_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS OrderItems (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -88,6 +89,8 @@ public class DataHelper extends SQLiteOpenHelper {
                 "price REAL," +
                 "FOREIGN KEY(order_id) REFERENCES Orders(order_id))";
         db.execSQL(CREATE_ORDER_ITEMS_TABLE);
+        db.execSQL("ALTER TABLE Orders ADD COLUMN status TEXT DEFAULT 'Pending'");
+
 
 
     }
@@ -100,6 +103,8 @@ public class DataHelper extends SQLiteOpenHelper {
             orderValues.put("phone", phone);
             orderValues.put("address", address);
             orderValues.put("note", note);
+            orderValues.put("order_date", System.currentTimeMillis());
+            orderValues.put("status", "Pending");
             orderValues.put("order_date", System.currentTimeMillis());
 
             long orderId = db.insert("Orders", null, orderValues);
