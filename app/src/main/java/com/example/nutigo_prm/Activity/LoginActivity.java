@@ -65,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
             userViewModel.getUserByEmailAndPassword(email, password).observe(this, user -> {
                 if (user != null) {
                     if(user.role.equals("admin")){
-//                        startActivity(new Intent(LoginActivity.this, AdminActivity.class));
-//                        finish();
+                        startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                        finish();
                         Toast.makeText(this, "Đăng nhập Admin thành công", Toast.LENGTH_SHORT).show();
                     }else{
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
