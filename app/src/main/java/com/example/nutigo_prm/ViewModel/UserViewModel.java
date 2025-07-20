@@ -13,6 +13,7 @@ import com.example.nutigo_prm.DAO.UserDao;
 import com.example.nutigo_prm.DataHelper.AppDatabase;
 import com.example.nutigo_prm.Entity.User;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,6 +47,14 @@ public class UserViewModel extends AndroidViewModel {
 
     public void updateUsernameByEmail(String email, String newUsername) {
         executorService.execute(() -> userDao.updateUsernameByEmail(email, newUsername));
+    }
+
+    public void delete(User user) {
+        executorService.execute(() -> userDao.delete(user));
+    }
+
+    public LiveData<List<User>> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
 }

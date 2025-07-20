@@ -3,9 +3,13 @@ package com.example.nutigo_prm.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +35,8 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         rvProducts = findViewById(R.id.recyclerViewProducts);
         fabAddProduct = findViewById(R.id.fabAddProduct);  // *** KHỞI TẠO NÚT NÀY ***
@@ -76,5 +82,31 @@ public class AdminActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadProducts(); // reload lại danh sách khi quay lại activity
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_product_management) {
+            Toast.makeText(this, "Quản lý sản phẩm được chọn", Toast.LENGTH_SHORT).show();
+            // Đã ở AdminActivity (Quản lý sản phẩm), nên không cần chuyển hướng
+            return true;
+        } else if (id == R.id.menu_user_management) {
+             Intent intent = new Intent(this, ManagerUserActivity.class);
+             startActivity(intent);
+            return true;
+        } else if (id == R.id.menu_order_management) {
+            Toast.makeText(this, "Quản lý đơn hàng được chọn", Toast.LENGTH_SHORT).show();
+            // Intent intent = new Intent(this, OrderManagementActivity.class);
+            // startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -2,11 +2,14 @@ package com.example.nutigo_prm.DAO;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.nutigo_prm.Entity.User;
+
+import java.util.List;
 
 
 @Dao
@@ -27,6 +30,11 @@ public interface UserDao {
     @Query("UPDATE User SET username = :newUsername WHERE email = :email")
     void updateUsernameByEmail(String email, String newUsername);
 
+    @Delete
+    void delete(User user);
+
+    @Query("SELECT * FROM User")
+    LiveData<List<User>> getAllUsers();
 }
 
 
