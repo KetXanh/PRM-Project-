@@ -1,46 +1,51 @@
 package com.example.nutigo_prm.Activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.nutigo_prm.Adapter.ProductAdapter;
 import com.example.nutigo_prm.Adapter.SliderAdapter;
-import com.example.nutigo_prm.DataHelper.Constanst;
-import com.example.nutigo_prm.DataHelper.DataHelper;
+import com.example.nutigo_prm.Entity.Category;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
+import com.example.nutigo_prm.ViewModel.CategoryViewModel;
+import com.example.nutigo_prm.ViewModel.ProductViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class
-HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
-    private ListView listView;
-    private SearchView searchView;
+    private RecyclerView recyclerView;
+    private ProductAdapter productAdapter;
+    private List<Product> productList = new ArrayList<>();
+    private List<Category> categoryList = new ArrayList<>();
+    private List<String> categoryNameList = new ArrayList<>();
     private Spinner spinnerCategory;
+    private SearchView searchView;
     private ViewPager2 sliderViewPager;
-    private DataHelper dbHelper;
-    private List<Product> productList;
-    private ProductAdapter adapter;
     private TextView tvEmpty;
     private BottomNavigationView bottomNavigationView;
+
+    private ProductViewModel productViewModel;
+    private CategoryViewModel categoryViewModel;
+
     private String selectedCategory = "Tất cả";
 
     @Override
@@ -48,8 +53,8 @@ HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // View mapping
-        listView = findViewById(R.id.listViewProducts);
+        // Ánh xạ
+        recyclerView = findViewById(R.id.recyclerViewProducts);
         searchView = findViewById(R.id.searchView);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         sliderViewPager = findViewById(R.id.sliderViewPager);
@@ -59,18 +64,22 @@ HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        // Initialize
-        dbHelper = new DataHelper(this);
-        productList = new ArrayList<>();
-        adapter = new ProductAdapter(this, productList);
-        listView.setAdapter(adapter);
-        listView.setEmptyView(tvEmpty);
+        // Cài đặt RecyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productAdapter = new ProductAdapter(this, productList);
+        recyclerView.setAdapter(productAdapter);
 
-        setupCategorySpinner();
+        // ViewModel
+        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+
+        // Slider banner
         setupSlider();
-        loadProducts();
 
-        // Search listener
+        // Quan sát danh sách sản phẩm và danh mục
+        observeData();
+
+        // Tìm kiếm
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -85,48 +94,25 @@ HomeActivity extends AppCompatActivity {
             }
         });
 
-
+        // Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_home) {
-                return true; // Đã ở Home
-            } else if (id == R.id.nav_cart) {
+            if (id == R.id.nav_home) return true;
+            else if (id == R.id.nav_cart) {
                 startActivity(new Intent(this, CartActivity.class));
                 return true;
-            }  else if (id == R.id.nav_settings) {
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                intent.putExtra("USER_EMAIL", Constanst.user);
+            } else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra("USER_EMAIL", "user@example.com"); // Thay bằng biến nếu cần
                 startActivity(intent);
+                return true;
             }
             return false;
-        });
-
-    }
-
-    private void setupCategorySpinner() {
-        List<String> categories = dbHelper.getAllCategories();
-        categories.add(0, "Tất cả");
-
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, categories);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(spinnerAdapter);
-
-        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory = categories.get(position);
-                filterProducts();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
     private void setupSlider() {
-        // Sample slider items (replace with actual data from your database or API)
         List<String> sliderImages = Arrays.asList(
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwalHbYE8LDug5-uV_lVz82DKg4_S4u5uRYA&s",
                 "https://huongvique.vn/wp-content/uploads/2023/06/rong-bien-kep-hat-dinh-duong-3-600x600.jpg",
@@ -136,53 +122,69 @@ HomeActivity extends AppCompatActivity {
         sliderViewPager.setAdapter(sliderAdapter);
     }
 
+    private void observeData() {
+        // Lấy danh mục
+        categoryViewModel.getAllCategories().observe(this, categories -> {
+            if (categories != null) {
+                categoryList.clear();
+                categoryList.addAll(categories);
+
+                categoryNameList.clear();
+                categoryNameList.add("Tất cả");
+                categoryNameList.addAll(
+                        categories.stream().map(Category::getName).collect(Collectors.toList())
+                );
+
+                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        categoryNameList
+                );
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerCategory.setAdapter(spinnerAdapter);
+
+                spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        selectedCategory = categoryNameList.get(position);
+                        filterProducts();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+            }
+        });
+
+        // Lấy danh sách sản phẩm
+        productViewModel.getAllProducts().observe(this, products -> {
+            if (products != null) {
+                productList.clear();
+                productList.addAll(products);
+                filterProducts();
+            }
+        });
+    }
+
     private void filterProducts() {
-        String keyword = searchView.getQuery().toString().trim();
-        productList.clear();
+        String keyword = searchView.getQuery().toString().trim().toLowerCase();
 
-        Cursor cursor;
-        if (selectedCategory.equals("Tất cả")) {
-            cursor = dbHelper.searchProductByName(keyword);
-        } else {
-            cursor = dbHelper.searchProductByCategoryAndName(selectedCategory, keyword);
-        }
+        List<Product> filtered = productList.stream()
+                .filter(p -> p.name.toLowerCase().contains(keyword))
+                .filter(p -> selectedCategory.equals("Tất cả") ||
+                        getCategoryNameById(p.categoryId).equals(selectedCategory))
+                .collect(Collectors.toList());
 
-        while (cursor.moveToNext()) {
-//            productList.add(new Product(
-//                    cursor.getInt(cursor.getColumnIndexOrThrow("product_id")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("category")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("description")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("image")),
-//                    cursor.getDouble(cursor.getColumnIndexOrThrow("price")),
-//                    cursor.getInt(cursor.getColumnIndexOrThrow("stock"))
-//            ));
-        }
-        cursor.close();
-        adapter.notifyDataSetChanged();
+        productAdapter = new ProductAdapter(this, filtered);
+        recyclerView.setAdapter(productAdapter);
+
+        tvEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
-    private void loadProducts() {
-        productList.clear();
-        Cursor cursor = dbHelper.getAllProducts();
-//        while (cursor.moveToNext()) {
-//            productList.add(new Product(
-//                    cursor.getInt(cursor.getColumnIndexOrThrow("product_id")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("category")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("description")),
-//                    cursor.getString(cursor.getColumnIndexOrThrow("image")),
-//                    cursor.getDouble(cursor.getColumnIndexOrThrow("price")),
-//                    cursor.getInt(cursor.getColumnIndexOrThrow("stock"))
-//            ));
-//        }
-        cursor.close();
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadProducts();
+    private String getCategoryNameById(int id) {
+        for (Category c : categoryList) {
+            if (c.getId() == id) return c.getName();
+        }
+        return "";
     }
 }

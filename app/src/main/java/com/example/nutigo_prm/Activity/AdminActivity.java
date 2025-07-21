@@ -70,7 +70,7 @@ public class AdminActivity extends AppCompatActivity {
             Toast.makeText(this, "Quản lý sản phẩm được chọn", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.menu_category_management) {
-            Intent intent = new Intent(this, AddCategoryActivity.class);
+            Intent intent = new Intent(this, ManagerCategoryActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.menu_user_management) {

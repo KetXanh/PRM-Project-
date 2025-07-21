@@ -15,6 +15,12 @@
         android:theme="@style/Theme.NutiGo_PRM"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.EditCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ManagerCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.AddCategoryActivity"
             android:exported="false" />
         <activity

@@ -23,8 +23,10 @@ import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.ViewModel.CategoryViewModel;
 import com.example.nutigo_prm.ViewModel.ProductViewModel;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapter.ViewHolder> {
@@ -67,11 +69,16 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
 
         public void bind(Product product) {
             tvName.setText(product.getName());
-            tvPrice.setText(String.format("$%.2f", product.getPrice()));
-            String categoryName = categoryMap.getOrDefault(product.getCategoryId(), "Unknown");
+
+            // Hiển thị giá theo kiểu VNĐ
+            NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            formatter.setMaximumFractionDigits(0); // Không có phần thập phân
+            tvPrice.setText(formatter.format(product.getPrice())); // ví dụ: 150.000 ₫
+
+            String categoryName = categoryMap.getOrDefault(product.getCategoryId(), "Không rõ");
             tvCategory.setText(categoryName);
 
-            // Load image with Glide
+            // Load hình ảnh bằng Glide
             if (product.getImage() != null && !product.getImage().isEmpty()) {
                 Glide.with(context)
                         .load(product.getImage())
@@ -82,7 +89,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                 imgProduct.setImageResource(R.drawable.ic_launcher_background);
             }
 
-            // Delete button
+            // Xử lý nút xóa
             btnDelete.setOnClickListener(v -> {
                 new android.app.AlertDialog.Builder(context)
                         .setTitle("Xóa sản phẩm")
@@ -105,13 +112,14 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                         .show();
             });
 
-            // Click item to edit
+            // Click item để chỉnh sửa
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, EditProductActivity.class);
                 intent.putExtra("product_id", product.getId());
                 context.startActivity(intent);
             });
         }
+
     }
 
     @NonNull

@@ -5,56 +5,69 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Activity.ProductDetailActivity;
-import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.Entity.Product;
+import com.example.nutigo_prm.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
-public class ProductAdapter extends ArrayAdapter<Product> {
-    private Context context;
-    private List<Product> products;
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
-    public ProductAdapter(Context context, List<Product> products) {
-        super(context, 0, products);
+    private final Context context;
+    private final List<Product> productList;
+
+    public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
-        this.products = products;
+        this.productList = productList;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Product product = products.get(position);
+    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
+        return new ProductViewHolder(view);
+    }
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
-        }
+    @Override
+    public void onBindViewHolder(ProductViewHolder holder, int position) {
+        Product product = productList.get(position);
 
-        TextView text1 = convertView.findViewById(R.id.tvProductName);
-        TextView text2 = convertView.findViewById(R.id.tvProductPrice);
-        ImageView imageView = convertView.findViewById(R.id.imgProduct);
+        holder.tvName.setText(product.name);
+        holder.tvPrice.setText("Giá: " + NumberFormat.getNumberInstance(new Locale("vi", "VN")).format(product.price) + "₫");
 
-        text1.setText(product.name);
-        text2.setText("Giá: " + product.price + "đ");
+        Glide.with(context)
+                .load(product.image)
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(holder.imgProduct);
 
-        convertView.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductDetailActivity.class);
             intent.putExtra("product_id", product.id);
             context.startActivity(intent);
         });
-
-        // Dùng Glide để load ảnh
-        Glide.with(context)
-                .load(product.image) // product.image là URL hoặc URI
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(imageView);
-
-        return convertView;
     }
 
+    @Override
+    public int getItemCount() {
+        return productList.size();
+    }
 
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
+        TextView tvName, tvPrice;
+        ImageView imgProduct;
+
+        public ProductViewHolder(View itemView) {
+            super(itemView);
+            tvName = itemView.findViewById(R.id.tvProductName);
+            tvPrice = itemView.findViewById(R.id.tvProductPrice);
+            imgProduct = itemView.findViewById(R.id.imgProduct);
+        }
+    }
 }

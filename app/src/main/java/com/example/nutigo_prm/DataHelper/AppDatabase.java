@@ -13,23 +13,26 @@ import com.example.nutigo_prm.DAO.CategoryDAO;
 import com.example.nutigo_prm.DAO.OrderDao;
 import com.example.nutigo_prm.DAO.ProductDAO;
 import com.example.nutigo_prm.DAO.UserDao;
+
+import com.example.nutigo_prm.DAO.FeedbackDAO;
 import com.example.nutigo_prm.Entity.Category;
 import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.Entity.User;
+import com.example.nutigo_prm.Entity.Feedback;
 
-
-@Database(entities = { User.class, Order.class, Product.class, Category.class}, version = 2)
+@Database(entities = { User.class, Order.class, Product.class, Category.class , Feedback.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
 //    public abstract ProductDao productDao();
     public abstract UserDao userDao();
 //    public abstract CartItemDao cartItemDao();
-public abstract OrderDao orderDao();
+    public abstract OrderDao orderDao();
     public abstract ProductDAO productDao();
     public abstract CategoryDAO categoryDAO();
 
+    public abstract FeedbackDAO feedbackDAO();
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {

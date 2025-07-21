@@ -5,6 +5,17 @@
     android:layout_height="wrap_content"
     android:background="#EFEFEF">
 
+    <!-- Người viết đánh giá -->
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Người đánh giá: "
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:textColor="#555555"
+        android:layout_marginBottom="4dp" />
+
     <RatingBar
         android:id="@+id/ratingBar"
         android:numStars="5"
