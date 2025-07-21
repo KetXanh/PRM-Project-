@@ -1,77 +1,99 @@
-    package com.example.nutigo_prm.Entity;
+package com.example.nutigo_prm.Entity;
 
-    public class Product {
-        public int id;
-        public String category;
-        public String name;
-        public String description;
-        public String image;
-        public double price;
-        public int stock;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-        public Product(int id, String category, String name, String description, String image, double price, int stock) {
-            this.id = id;
-            this.category = category;
-            this.name = name;
-            this.description = description;
-            this.image = image;
-            this.price = price;
-            this.stock = stock;
-        }
+@Entity
+public class Product {
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id")
+    public int id;
 
-        public int getId() {
-            return id;
-        }
+    @ColumnInfo(name = "categoryId")
+    public int categoryId;
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    @ColumnInfo(name = "name")
+    public String name;
 
-        public String getCategory() {
-            return category;
-        }
+    @ColumnInfo(name = "description")
+    public String description;
 
-        public void setCategory(String category) {
-            this.category = category;
-        }
+    @ColumnInfo(name = "image")
+    public String image;
 
-        public String getName() {
-            return name;
-        }
+    @ColumnInfo(name = "price")
+    public double price;
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    @ColumnInfo(name = "stock")
+    public int stock;
 
-        public String getDescription() {
-            return description;
-        }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
-
-        public int getStock() {
-            return stock;
-        }
-
-        public void setStock(int stock) {
-            this.stock = stock;
-        }
+    public Product(int categoryId, String name, String description, String image, double price, int stock) {
+        this.categoryId = categoryId;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.price = price;
+        this.stock = stock;
     }
+
+    @NonNull
+    public int getId() {
+        return id;
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+}

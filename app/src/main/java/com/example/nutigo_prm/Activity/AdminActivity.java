@@ -1,7 +1,6 @@
 package com.example.nutigo_prm.Activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,13 +9,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nutigo_prm.Adapter.AdminProductAdapter;
-import com.example.nutigo_prm.DataHelper.DataHelper;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
+import com.example.nutigo_prm.ViewModel.ProductViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -27,9 +27,8 @@ public class AdminActivity extends AppCompatActivity {
     private RecyclerView rvProducts;
     private AdminProductAdapter adapter;
     private List<Product> productList;
-    private DataHelper dataHelper;
-
-    private FloatingActionButton fabAddProduct; // phải khởi tạo trước khi dùng
+    private ProductViewModel productViewModel;
+    private FloatingActionButton fabAddProduct;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,16 +38,18 @@ public class AdminActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         rvProducts = findViewById(R.id.recyclerViewProducts);
-        fabAddProduct = findViewById(R.id.fabAddProduct);  // *** KHỞI TẠO NÚT NÀY ***
-        dataHelper = new DataHelper(this);
-
+        fabAddProduct = findViewById(R.id.fabAddProduct);
         productList = new ArrayList<>();
-        adapter = new AdminProductAdapter(this, productList, dataHelper);
-
+        adapter = new AdminProductAdapter(this, productList, this); // Pass this as LifecycleOwner
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(adapter);
 
-        loadProducts();
+        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        productViewModel.getAllProducts().observe(this, products -> {
+            productList.clear();
+            productList.addAll(products);
+            adapter.notifyDataSetChanged();
+        });
 
         fabAddProduct.setOnClickListener(v -> {
             Intent intent = new Intent(AdminActivity.this, AddProductActivity.class);
@@ -56,33 +57,6 @@ public class AdminActivity extends AppCompatActivity {
         });
     }
 
-    private void loadProducts() {
-        productList.clear();
-
-        Cursor cursor = dataHelper.getAllProducts();
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
-                String category = cursor.getString(cursor.getColumnIndexOrThrow("category"));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                String image = cursor.getString(cursor.getColumnIndexOrThrow("image"));
-                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
-                int stock = cursor.getInt(cursor.getColumnIndexOrThrow("stock"));
-
-                productList.add(new Product(id, category, name, description, image, price, stock));
-            } while (cursor.moveToNext());
-
-            cursor.close();
-        }
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadProducts(); // reload lại danh sách khi quay lại activity
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_admin, menu);
@@ -94,16 +68,17 @@ public class AdminActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.menu_product_management) {
             Toast.makeText(this, "Quản lý sản phẩm được chọn", Toast.LENGTH_SHORT).show();
-            // Đã ở AdminActivity (Quản lý sản phẩm), nên không cần chuyển hướng
+            return true;
+        } else if (id == R.id.menu_category_management) {
+            Intent intent = new Intent(this, AddCategoryActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.menu_user_management) {
-             Intent intent = new Intent(this, ManagerUserActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(this, ManagerUserActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.menu_order_management) {
             Toast.makeText(this, "Quản lý đơn hàng được chọn", Toast.LENGTH_SHORT).show();
-            // Intent intent = new Intent(this, OrderManagementActivity.class);
-            // startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

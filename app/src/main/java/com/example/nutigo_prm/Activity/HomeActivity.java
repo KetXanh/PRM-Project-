@@ -148,15 +148,15 @@ HomeActivity extends AppCompatActivity {
         }
 
         while (cursor.moveToNext()) {
-            productList.add(new Product(
-                    cursor.getInt(cursor.getColumnIndexOrThrow("product_id")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("category")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("description")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("image")),
-                    cursor.getDouble(cursor.getColumnIndexOrThrow("price")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("stock"))
-            ));
+//            productList.add(new Product(
+//                    cursor.getInt(cursor.getColumnIndexOrThrow("product_id")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("category")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("description")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("image")),
+//                    cursor.getDouble(cursor.getColumnIndexOrThrow("price")),
+//                    cursor.getInt(cursor.getColumnIndexOrThrow("stock"))
+//            ));
         }
         cursor.close();
         adapter.notifyDataSetChanged();
@@ -165,17 +165,17 @@ HomeActivity extends AppCompatActivity {
     private void loadProducts() {
         productList.clear();
         Cursor cursor = dbHelper.getAllProducts();
-        while (cursor.moveToNext()) {
-            productList.add(new Product(
-                    cursor.getInt(cursor.getColumnIndexOrThrow("product_id")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("category")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("description")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("image")),
-                    cursor.getDouble(cursor.getColumnIndexOrThrow("price")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("stock"))
-            ));
-        }
+//        while (cursor.moveToNext()) {
+//            productList.add(new Product(
+//                    cursor.getInt(cursor.getColumnIndexOrThrow("product_id")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("category")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("description")),
+//                    cursor.getString(cursor.getColumnIndexOrThrow("image")),
+//                    cursor.getDouble(cursor.getColumnIndexOrThrow("price")),
+//                    cursor.getInt(cursor.getColumnIndexOrThrow("stock"))
+//            ));
+//        }
         cursor.close();
         adapter.notifyDataSetChanged();
     }

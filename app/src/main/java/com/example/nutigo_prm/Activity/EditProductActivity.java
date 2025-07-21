@@ -26,13 +26,13 @@ public class EditProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_product);
 
-        etCategory = findViewById(R.id.etCategory);
-        etName = findViewById(R.id.etName);
-        etDescription = findViewById(R.id.etDescription);
-        etImage = findViewById(R.id.etImage);
-        etPrice = findViewById(R.id.etPrice);
-        etStock = findViewById(R.id.etStock);
-        btnSave = findViewById(R.id.btnSave);
+//        etCategory = findViewById(R.id.etCategory);
+//        etName = findViewById(R.id.etName);
+//        etDescription = findViewById(R.id.etDescription);
+//        etImage = findViewById(R.id.etImage);
+//        etPrice = findViewById(R.id.etPrice);
+//        etStock = findViewById(R.id.etStock);
+//        btnSave = findViewById(R.id.btnSave);
 
         dataHelper = new DataHelper(this);
 
@@ -62,14 +62,14 @@ public class EditProductActivity extends AppCompatActivity {
             double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
             int stock = cursor.getInt(cursor.getColumnIndexOrThrow("stock"));
 
-            product = new Product(productId, category, name, description, image, price, stock);
-
-            etCategory.setText(category);
-            etName.setText(name);
-            etDescription.setText(description);
-            etImage.setText(image);
-            etPrice.setText(String.valueOf(price));
-            etStock.setText(String.valueOf(stock));
+//            product = new Product(productId, category, name, description, image, price, stock);
+//
+//            etCategory.setText(category);
+//            etName.setText(name);
+//            etDescription.setText(description);
+//            etImage.setText(image);
+//            etPrice.setText(String.valueOf(price));
+//            etStock.setText(String.valueOf(stock));
         }
         cursor.close();
     }

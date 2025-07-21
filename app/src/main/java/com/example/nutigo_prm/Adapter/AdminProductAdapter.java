@@ -1,42 +1,59 @@
 package com.example.nutigo_prm.Adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Activity.EditProductActivity;
-import com.example.nutigo_prm.DataHelper.DataHelper;
+import com.example.nutigo_prm.Entity.Category;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
-import com.squareup.picasso.Picasso;
+import com.example.nutigo_prm.ViewModel.CategoryViewModel;
+import com.example.nutigo_prm.ViewModel.ProductViewModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapter.ViewHolder> {
 
-    private List<Product> productList;
-    private Context context;
-    private DataHelper dataHelper;
+    private final Context context;
+    private final List<Product> productList;
+    private final ProductViewModel productViewModel;
+    private final Map<Integer, String> categoryMap;
 
-    public AdminProductAdapter(Context context, List<Product> productList, DataHelper dataHelper) {
+    public AdminProductAdapter(Context context, List<Product> productList, LifecycleOwner lifecycleOwner) {
         this.context = context;
         this.productList = productList;
-        this.dataHelper = dataHelper;
+        this.productViewModel = new ViewModelProvider((androidx.lifecycle.ViewModelStoreOwner) context).get(ProductViewModel.class);
+        this.categoryMap = new HashMap<>();
+
+        // Load category names
+        CategoryViewModel categoryViewModel = new ViewModelProvider((androidx.lifecycle.ViewModelStoreOwner) context).get(CategoryViewModel.class);
+        categoryViewModel.getAllCategories().observe(lifecycleOwner, categories -> {
+            categoryMap.clear();
+            for (Category category : categories) {
+                categoryMap.put(category.getId(), category.getName());
+            }
+            notifyDataSetChanged();
+        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvName, tvPrice;
+        TextView tvName, tvPrice, tvCategory;
         ImageButton btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
@@ -44,27 +61,30 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
             imgProduct = itemView.findViewById(R.id.imgProduct);
             tvName = itemView.findViewById(R.id.tvProductName);
             tvPrice = itemView.findViewById(R.id.tvProductPrice);
+            tvCategory = itemView.findViewById(R.id.tvProductCategory);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
 
         public void bind(Product product) {
             tvName.setText(product.getName());
-            tvPrice.setText("$" + product.getPrice());
+            tvPrice.setText(String.format("$%.2f", product.getPrice()));
+            String categoryName = categoryMap.getOrDefault(product.getCategoryId(), "Unknown");
+            tvCategory.setText(categoryName);
 
-            // Load ảnh với Picasso (bỏ qua nếu image là local path)
+            // Load image with Glide
             if (product.getImage() != null && !product.getImage().isEmpty()) {
-                Picasso.get()
+                Glide.with(context)
                         .load(product.getImage())
-                        .placeholder(R.drawable.ic_launcher_background) // bạn cần tạo 1 file ảnh placeholder
-                        .error(R.drawable.ic_launcher_foreground) // ảnh lỗi load
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_foreground)
                         .into(imgProduct);
             } else {
                 imgProduct.setImageResource(R.drawable.ic_launcher_background);
             }
 
-            // Xử lý xóa an toàn
+            // Delete button
             btnDelete.setOnClickListener(v -> {
-                new AlertDialog.Builder(context)
+                new android.app.AlertDialog.Builder(context)
                         .setTitle("Xóa sản phẩm")
                         .setMessage("Bạn có chắc muốn xóa sản phẩm \"" + product.getName() + "\" không?")
                         .setPositiveButton("Xóa", (dialog, which) -> {
@@ -74,15 +94,8 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                                 return;
                             }
                             try {
-                                int deleted = dataHelper.deleteProduct(product.getId());
-                                if (deleted > 0) {
-                                    productList.remove(position);
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position, productList.size());
-                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
-                                }
+                                productViewModel.delete(product);
+                                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(context, "Lỗi khi xóa sản phẩm", Toast.LENGTH_SHORT).show();
@@ -92,7 +105,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                         .show();
             });
 
-            // Click item mở EditProductActivity
+            // Click item to edit
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, EditProductActivity.class);
                 intent.putExtra("product_id", product.getId());
@@ -103,13 +116,13 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
 
     @NonNull
     @Override
-    public AdminProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_product_admin, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdminProductAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(productList.get(position));
     }
 

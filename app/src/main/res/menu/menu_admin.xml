@@ -6,6 +6,10 @@
         android:title="Quản lý sản phẩm"
         app:showAsAction="never" />
     <item
+        android:id="@+id/menu_category_management"
+        android:title="Quản lý Danh Mục"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/menu_user_management"
         android:title="Quản lý người dùng"
         app:showAsAction="never" />

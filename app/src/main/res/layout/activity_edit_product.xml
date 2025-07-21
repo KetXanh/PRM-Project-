@@ -5,60 +5,53 @@
     android:padding="16dp">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/etCategory"
+            android:id="@+id/edtName"
+            android:hint="Tên sản phẩm *"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Category" />
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spnCategory"
+            android:hint="Danh mục *"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/etName"
+            android:id="@+id/edtDescription"
+            android:hint="Mô tả"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name"
-            android:layout_marginTop="8dp" />
+            android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/etDescription"
+            android:id="@+id/edtImage"
+            android:hint="URL hình ảnh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Description"
-            android:layout_marginTop="8dp" />
+            android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/etImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Image URL"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/edtPrice"
+            android:hint="Giá (VD: 100000) *"
             android:inputType="numberDecimal"
-            android:hint="Price"
-            android:layout_marginTop="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/etStock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/edtStock"
+            android:hint="Số lượng tồn kho *"
             android:inputType="number"
-            android:hint="Stock"
-            android:layout_marginTop="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/btnSave"
+            android:id="@+id/btnAddProduct"
+            android:text="Thêm sản phẩm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:layout_marginTop="16dp" />
-
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
-
 </ScrollView>
