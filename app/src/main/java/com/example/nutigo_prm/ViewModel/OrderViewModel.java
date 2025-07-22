@@ -18,7 +18,5 @@ public class OrderViewModel extends AndroidViewModel {
         orderDao = db.orderDao();
     }
 
-    public LiveData<List<Order>> getOrdersByUserEmail(String userEmail) {
-        return orderDao.getOrdersByUserEmail(userEmail);
-    }
+
 }

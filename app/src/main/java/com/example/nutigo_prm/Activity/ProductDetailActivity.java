@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Adapter.FeedbackAdapter;
+import com.example.nutigo_prm.DataHelper.AppDatabase;
 import com.example.nutigo_prm.DataHelper.Constanst;
+import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.Entity.Feedback;
 import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.ViewModel.FeedbackViewModel;
@@ -103,6 +105,36 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // Sự kiện đánh giá
         btnWriteFeedback.setOnClickListener(v -> showFeedbackDialog());
+        btnAddToCart.setOnClickListener(v -> {
+            productViewModel.getProductById(productId).observe(this, product -> {
+                if (product != null) {
+                    CartItem cartItem = new CartItem(
+                            product.getId(),
+                            product.getName(),
+                            product.getImage(),
+                            product.getPrice(),
+                            1
+                    );
+
+                    new Thread(() -> {
+                        AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+                        CartItem existing = db.cartDao().getCartItemByProductId(product.getId());
+
+                        if (existing != null) {
+                            existing.quantity += 1;
+                            db.cartDao().updateCartItem(existing);
+                        } else {
+                            db.cartDao().insertCartItem(cartItem);
+                        }
+
+                        runOnUiThread(() ->
+                                Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show()
+                        );
+                    }).start();
+                }
+            });
+        });
+
     }
 
     private void showFeedbackDialog() {

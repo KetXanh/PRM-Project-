@@ -1,98 +1,107 @@
 package com.example.nutigo_prm.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.nutigo_prm.Entity.Cart;
+import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.R;
 
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private Context context;
-    private List<Cart> cartList;
 
-    public interface OnCartActionListener {
-        void onCartUpdated(List<Cart> updatedCartList);
+    public interface CartItemListener {
+        void onQuantityChanged(CartItem item, int newQuantity);
+        void onItemRemoved(CartItem item);
     }
 
-    private OnCartActionListener listener;
+    private List<CartItem> cartItems;
+    private final CartItemListener listener;
 
-    public CartAdapter(Context context, List<Cart> cartList, OnCartActionListener listener) {
-        this.context = context;
-        this.cartList = cartList;
+    public CartAdapter(List<CartItem> cartItems, CartItemListener listener) {
+        this.cartItems = cartItems;
         this.listener = listener;
+    }
+
+
+    public void setCartItems(List<CartItem> items) {
+        this.cartItems = items;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_card, parent, false);
-        return new CartViewHolder(view);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart, parent, false);
+        return new CartViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
-        Cart item = cartList.get(position);
+        CartItem item = cartItems.get(position);
+        holder.name.setText(item.getName());
+        holder.price.setText(item.getPrice() + "đ");
+        holder.quantity.setText(String.valueOf(item.getQuantity()));
 
-        holder.tvName.setText(item.getName());
-        holder.tvPrice.setText(String.format("%.0f₫", item.getPrice()));
-        holder.tvQuantity.setText(String.valueOf(item.getQuantity()));
-
-        Glide.with(context)
-                .load(item.getImage())
+        Glide.with(holder.image.getContext())
+                .load(item.getImageUrl())
                 .placeholder(R.drawable.ic_cart_foreground)
-                .into(holder.imgProduct);
+                .into(holder.image);
 
+        // Nút tăng
         holder.btnIncrease.setOnClickListener(v -> {
-            item.setQuantity(item.getQuantity() + 1);
-            notifyItemChanged(position);
-            listener.onCartUpdated(cartList);
+            int newQty = item.getQuantity() + 1;
+            item.setQuantity(newQty);
+            holder.quantity.setText(String.valueOf(newQty)); // 👈 update text
+            listener.onQuantityChanged(item, newQty);
+            notifyItemChanged(position); // 👈 update UI
         });
 
+        // Nút giảm
         holder.btnDecrease.setOnClickListener(v -> {
-            if (item.getQuantity() > 1) {
-                item.setQuantity(item.getQuantity() - 1);
-                notifyItemChanged(position);
-                listener.onCartUpdated(cartList);
+            int newQty = item.getQuantity() - 1;
+            if (newQty >= 1) {
+                item.setQuantity(newQty);
+                holder.quantity.setText(String.valueOf(newQty)); // 👈 update text
+                listener.onQuantityChanged(item, newQty);
+                notifyItemChanged(position); // 👈 update UI
+            } else {
+                listener.onItemRemoved(item);
+                notifyItemRemoved(position); // 👈 xóa khỏi RecyclerView
             }
         });
 
+        // Nút xóa
         holder.btnRemove.setOnClickListener(v -> {
-            cartList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartList.size());
-            listener.onCartUpdated(cartList);
+            listener.onItemRemoved(item);
+            notifyItemRemoved(position); // 👈 cần thiết khi xóa
         });
     }
 
+
     @Override
     public int getItemCount() {
-        return cartList.size();
+        return cartItems == null ? 0 : cartItems.size();
     }
 
-    public static class CartViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProduct;
-        TextView tvName, tvPrice, tvQuantity;
+    static class CartViewHolder extends RecyclerView.ViewHolder {
+        TextView name, price, quantity;
+        ImageView image;
         Button btnIncrease, btnDecrease;
         ImageButton btnRemove;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgProduct = itemView.findViewById(R.id.imageProduct);
-            tvName = itemView.findViewById(R.id.textProductName);
-            tvPrice = itemView.findViewById(R.id.textProductPrice);
-            tvQuantity = itemView.findViewById(R.id.textQuantity);
+            name = itemView.findViewById(R.id.textProductName);
+            price = itemView.findViewById(R.id.textProductPrice);
+            quantity = itemView.findViewById(R.id.textQuantity);
+            image = itemView.findViewById(R.id.imageProduct);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnRemove = itemView.findViewById(R.id.btnRemove);

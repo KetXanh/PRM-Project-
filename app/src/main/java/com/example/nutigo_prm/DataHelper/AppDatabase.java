@@ -9,19 +9,21 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.nutigo_prm.DAO.CartDAO;
 import com.example.nutigo_prm.DAO.CategoryDAO;
 import com.example.nutigo_prm.DAO.OrderDao;
 import com.example.nutigo_prm.DAO.ProductDAO;
 import com.example.nutigo_prm.DAO.UserDao;
 
 import com.example.nutigo_prm.DAO.FeedbackDAO;
+import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.Entity.Category;
 import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.Entity.User;
 import com.example.nutigo_prm.Entity.Feedback;
 
-@Database(entities = { User.class, Order.class, Product.class, Category.class , Feedback.class}, version = 1)
+@Database(entities = { User.class, Order.class, Product.class, Category.class , Feedback.class, CartItem.class }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
@@ -33,6 +35,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CategoryDAO categoryDAO();
 
     public abstract FeedbackDAO feedbackDAO();
+    public abstract CartDAO cartDao();
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
@@ -70,5 +73,6 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }).start();
     }
+
 
 }
