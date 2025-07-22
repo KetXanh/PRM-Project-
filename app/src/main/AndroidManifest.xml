@@ -15,6 +15,9 @@
         android:theme="@style/Theme.NutiGo_PRM"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.MangerOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.EditCategoryActivity"
             android:exported="false" />
         <activity
@@ -71,6 +74,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity
+            android:name=".Activity.EditProfileActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

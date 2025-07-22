@@ -27,4 +27,7 @@ public interface OrderDao {
 
     @Update
     void updateOrder(Order order);
+
+    @Query("SELECT * FROM `Order` ORDER BY createdAt DESC")
+    LiveData<List<Order>> AdminGetAllOrders();
 }

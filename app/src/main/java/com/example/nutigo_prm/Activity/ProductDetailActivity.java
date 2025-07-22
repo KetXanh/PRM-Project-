@@ -1,6 +1,7 @@
 package com.example.nutigo_prm.Activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -17,6 +18,7 @@ import com.example.nutigo_prm.Entity.Feedback;
 import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.ViewModel.FeedbackViewModel;
 import com.example.nutigo_prm.ViewModel.ProductViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private FeedbackAdapter feedbackAdapter;
     private FeedbackViewModel feedbackViewModel;
     private ProductViewModel productViewModel;
-
+    private BottomNavigationView bottomNavigationView;
     private int productId;
     private Feedback existingFeedback = null;
 
@@ -58,6 +60,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart = findViewById(R.id.btnAddToCart);
         listViewFeedback = findViewById(R.id.listViewFeedback);
         tvEmptyFeedback = findViewById(R.id.tvEmptyFeedback);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         // ViewModel
         feedbackViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
@@ -105,6 +108,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // Sự kiện đánh giá
         btnWriteFeedback.setOnClickListener(v -> showFeedbackDialog());
+
         btnAddToCart.setOnClickListener(v -> {
             productViewModel.getProductById(productId).observe(this, product -> {
                 if (product != null) {
@@ -133,6 +137,25 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }).start();
                 }
             });
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, HomeActivity.class));
+                return true;
+            }
+            else if (id == R.id.nav_cart) {
+                startActivity(new Intent(this, CartActivity.class));
+                return true;
+            } else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra("USER_EMAIL", "user@example.com"); // Thay bằng biến nếu cần
+                startActivity(intent);
+                return true;
+            }
+            return false;
         });
 
     }

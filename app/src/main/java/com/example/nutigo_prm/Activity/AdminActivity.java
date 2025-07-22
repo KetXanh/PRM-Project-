@@ -78,7 +78,8 @@ public class AdminActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.menu_order_management) {
-            Toast.makeText(this, "Quản lý đơn hàng được chọn", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MangerOrderActivity.class);
+            startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

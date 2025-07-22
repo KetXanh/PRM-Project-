@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Nội dung chính -->
+    <!-- ScrollView chứa nội dung -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,19 +12,18 @@
         android:layout_above="@id/bottomNavigationView">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center_horizontal"
             android:paddingBottom="16dp">
 
-            <!-- Hình ảnh sản phẩm -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"
-                android:layout_marginBottom="12dp">
+                android:layout_height="220dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:layout_marginBottom="16dp">
 
                 <ImageView
                     android:id="@+id/imgProduct"
@@ -34,18 +33,16 @@
                     android:src="@drawable/ic_launcher_background" />
             </androidx.cardview.widget.CardView>
 
-            <!-- Tên sản phẩm -->
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tên sản phẩm"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#212121"
-                android:paddingBottom="4dp" />
+                android:paddingBottom="8dp" />
 
-            <!-- Danh mục -->
             <TextView
                 android:id="@+id/tvCategory"
                 android:layout_width="match_parent"
@@ -53,9 +50,8 @@
                 android:text="Danh mục"
                 android:textSize="14sp"
                 android:textColor="#757575"
-                android:paddingBottom="4dp" />
+                android:paddingBottom="8dp" />
 
-            <!-- Mô tả -->
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
@@ -63,20 +59,18 @@
                 android:text="Mô tả"
                 android:textSize="15sp"
                 android:textColor="#424242"
-                android:paddingBottom="8dp" />
+                android:paddingBottom="12dp" />
 
-            <!-- Giá -->
             <TextView
                 android:id="@+id/tvPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Giá"
-                android:textColor="#E64A19"
+                android:textColor="#D32F2F"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:paddingBottom="4dp" />
+                android:paddingBottom="6dp" />
 
-            <!-- Tồn kho -->
             <TextView
                 android:id="@+id/tvStock"
                 android:layout_width="match_parent"
@@ -84,9 +78,8 @@
                 android:text="Tồn kho"
                 android:textColor="#388E3C"
                 android:textSize="14sp"
-                android:paddingBottom="12dp" />
+                android:paddingBottom="16dp" />
 
-            <!-- Đánh giá -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +88,6 @@
                 android:textSize="16sp"
                 android:paddingBottom="8dp" />
 
-            <!-- Danh sách feedback -->
             <ListView
                 android:id="@+id/listViewFeedback"
                 android:layout_width="match_parent"
@@ -105,7 +97,6 @@
                 android:nestedScrollingEnabled="true"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Khi không có feedback -->
             <TextView
                 android:id="@+id/tvEmptyFeedback"
                 android:layout_width="match_parent"
@@ -117,34 +108,40 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/btnAddToCart"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thêm giỏ hàng"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/green"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                android:drawableStart="@android:drawable/ic_input_add"
-                android:padding="12dp"/>
-            <!-- Nút viết đánh giá -->
-            <Button
-                android:id="@+id/btnWriteFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Viết đánh giá"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/design_default_color_primary"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                android:drawableStart="@android:drawable/ic_input_add"
-                android:padding="12dp"/>
+                android:layout_marginTop="12dp"
+                android:weightSum="2"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnAddToCart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Thêm giỏ hàng"
+                    android:backgroundTint="@color/green"
+                    android:textColor="@android:color/white"
+                    android:drawableStart="@android:drawable/ic_input_add"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnWriteFeedback"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Viết đánh giá"
+                    android:backgroundTint="@color/design_default_color_primary"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    android:drawableStart="@android:drawable/ic_menu_edit" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
