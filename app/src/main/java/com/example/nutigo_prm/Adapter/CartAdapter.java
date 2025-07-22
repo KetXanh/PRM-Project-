@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide;
 import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
 
@@ -46,7 +48,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartItem item = cartItems.get(position);
         holder.name.setText(item.getName());
-        holder.price.setText(item.getPrice() + "đ");
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        holder.price.setText(format.format(item.getPrice()) + "đ");
         holder.quantity.setText(String.valueOf(item.getQuantity()));
 
         Glide.with(holder.image.getContext())

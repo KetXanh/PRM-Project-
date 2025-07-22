@@ -1,6 +1,8 @@
 package com.example.nutigo_prm.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nutigo_prm.Activity.OrderDetailActivity;
 import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.R;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,15 +49,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.txtName.setText(order.username);
         holder.txtPhone.setText(order.phone);
         holder.txtStatus.setText(order.status);
-        holder.txtTotal.setText("Total: $" + order.totalAmount);
-
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        holder.txtTotal.setText("Total: " + format.format(order.totalAmount));
         // Format thời gian tạo
         String dateStr = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                 .format(new Date(order.createdAt));
         holder.txtCreatedAt.setText(dateStr);
 
-        // Nếu sau này bạn muốn set onClick để xem chi tiết:
-        // holder.itemView.setOnClickListener(...)
+        // onClick để xem chi tiết:
+        holder.itemView.setOnClickListener(v -> {
+            Log.d("OrderAdapter", "Clicked Order ID: " + order.id);
+            Intent intent = new Intent(context, OrderDetailActivity.class);
+            intent.putExtra("ORDER_ID", order.id);
+            context.startActivity(intent);
+        });
     }
 
     @Override

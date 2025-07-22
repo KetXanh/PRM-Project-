@@ -9,9 +9,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nutigo_prm.DataHelper.AppDatabase;
+import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.Entity.Order;
+import com.example.nutigo_prm.Entity.OrderItem;
 import com.example.nutigo_prm.R;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -67,12 +71,31 @@ public class CheckoutActivity extends AppCompatActivity {
                     order.note = note;
                     order.status = "Pending";
                     order.createdAt = System.currentTimeMillis();
-                    order.totalAmount = totalAmount;  // Gán tổng tiền
+                    order.totalAmount = totalAmount;
 
                     long orderId = database.orderDao().insertOrder(order);
 
                     if (orderId > 0) {
+                        List<CartItem> cartItems = database.cartDao().getAllCartItems();
+
+                        List<OrderItem> orderItems = new ArrayList<>();
+                        for (CartItem cartItem : cartItems) {
+                            OrderItem item = new OrderItem(
+                                    (int) orderId,
+                                    cartItem.productId,
+                                    cartItem.name,
+                                    cartItem.imageUrl,
+                                    cartItem.price,
+                                    cartItem.quantity
+                            );
+                            orderItems.add(item);
+                        }
+
+                        // 🟢 Thêm vào bảng order_items
+                        database.orderItemDao().insertAll(orderItems); // cần khai báo insertAll trong DAO
+
                         database.cartDao().clearCart();
+
                         runOnUiThread(() -> {
                             Toast.makeText(CheckoutActivity.this, "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
                             setResult(RESULT_OK);
@@ -84,6 +107,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         });
                     }
                 });
+
             }
         });
     }

@@ -71,16 +71,6 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Nút chi tiết -->
-        <Button
-            android:id="@+id/btnOrderDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi tiết"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#ffbd59"
-            android:layout_gravity="center_vertical"
-            />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

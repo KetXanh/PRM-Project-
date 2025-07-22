@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.nutigo_prm.Adapter.ProductAdapter;
 import com.example.nutigo_prm.Adapter.SliderAdapter;
+import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.Entity.Category;
 import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
@@ -104,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             } else if (id == R.id.nav_settings) {
                 Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra("USER_EMAIL", "user@example.com"); // Thay bằng biến nếu cần
+                intent.putExtra("USER_EMAIL", Constanst.user); // Thay bằng biến nếu cần
                 startActivity(intent);
                 return true;
             }
