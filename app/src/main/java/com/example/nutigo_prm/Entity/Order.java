@@ -9,6 +9,8 @@ public class Order {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    public String user;
+
     public String username;
     public String phone;
     public String address;
@@ -20,7 +22,8 @@ public class Order {
     public Order() {
     }
 
-    public Order(String username, String phone, String address, String note, double totalAmount, String status, long createdAt) {
+    public Order(String user, String username, String phone, String address, String note, double totalAmount, String status, long createdAt) {
+        this.user = user;
         this.username = username;
         this.phone = phone;
         this.address = address;

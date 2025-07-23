@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nutigo_prm.DataHelper.AppDatabase;
+import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.Entity.OrderItem;
@@ -65,6 +66,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     double totalAmount = database.cartDao().getCartTotal();
 
                     Order order = new Order();
+                    order.user = Constanst.user;
                     order.username = name;
                     order.phone = phone;
                     order.address = address;
@@ -91,7 +93,6 @@ public class CheckoutActivity extends AppCompatActivity {
                             orderItems.add(item);
                         }
 
-                        // 🟢 Thêm vào bảng order_items
                         database.orderItemDao().insertAll(orderItems); // cần khai báo insertAll trong DAO
 
                         database.cartDao().clearCart();

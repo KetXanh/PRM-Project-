@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.Entity.User;
 import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.ViewModel.UserViewModel;
@@ -78,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            userViewModel.getProfile(username).observe(this, user -> {
+            userViewModel.getProfile(Constanst.user).observe(this, user -> {
                 if (user != null) {
                     Toast.makeText(this, "Tên người dùng đã tồn tại", Toast.LENGTH_SHORT).show();
                 } else {

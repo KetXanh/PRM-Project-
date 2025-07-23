@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nutigo_prm.Adapter.OrderAdapter;
 import com.example.nutigo_prm.DataHelper.AppDatabase;
+import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.R;
 
@@ -33,7 +34,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
         // Dùng background thread để lấy dữ liệu
         executor.execute(() -> {
-            List<Order> orders = db.orderDao().getAllOrders();
+            List<Order> orders = db.orderDao().getOrdersByUser(Constanst.user);
 
             runOnUiThread(() -> {
                 orderAdapter = new OrderAdapter(OrderHistoryActivity.this, orders);

@@ -16,6 +16,9 @@ public interface OrderDao {
     @Insert
     long insertOrder(Order order);
 
+    @Query("SELECT * FROM `Order` WHERE user = :user ORDER BY createdAt DESC")
+    List<Order> getOrdersByUser(String user);
+
     @Query("SELECT * FROM `Order` ORDER BY createdAt DESC")
     List<Order> getAllOrders();
 

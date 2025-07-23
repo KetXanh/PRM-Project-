@@ -57,4 +57,5 @@ public class UserViewModel extends AndroidViewModel {
         return userDao.getAllUsers();
     }
 
+    public User getUserByEmail(String email) {return  userDao.getUserByEmail(email);}
 }

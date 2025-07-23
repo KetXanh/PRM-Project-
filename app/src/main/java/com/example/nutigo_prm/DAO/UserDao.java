@@ -35,6 +35,8 @@ public interface UserDao {
 
     @Query("SELECT * FROM User")
     LiveData<List<User>> getAllUsers();
+
+
 }
 
 

@@ -24,7 +24,7 @@ import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.Entity.User;
 import com.example.nutigo_prm.Entity.Feedback;
 
-@Database(entities = {User.class, Order.class, Product.class, Category.class, Feedback.class, CartItem.class, OrderItem.class}, version = 2)
+@Database(entities = {User.class, Order.class, Product.class, Category.class, Feedback.class, CartItem.class, OrderItem.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
