@@ -25,6 +25,10 @@ public class CartActivity extends AppCompatActivity {
     private CartAdapter cartAdapter;
     private TextView txtTotal;
     private Button btnCheckout;
+    private String formatPrice(double price) {
+        return String.format("%,.0f", price).replace(',', '.') + " đ";
+    }
+
     private List<CartItem> cartItems;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -86,7 +90,7 @@ public class CartActivity extends AppCompatActivity {
         for (CartItem item : cartItems) {
             total += item.price * item.quantity;
         }
-        txtTotal.setText(String.format("Tổng: %.0fđ", total));
+        txtTotal.setText("Tổng: " + formatPrice(total));
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

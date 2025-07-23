@@ -21,6 +21,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private Context context;
     private List<Order> orderList;
+    private String formatCurrency(double amount) {
+        return String.format("%,.0f", amount).replace(',', '.') + " đ";
+    }
 
     public OrderAdapter(Context context, List<Order> orderList) {
         this.context = context;
@@ -45,7 +48,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.txtName.setText(order.username);
         holder.txtPhone.setText(order.phone);
         holder.txtStatus.setText(order.status);
-        holder.txtTotal.setText("Total: $" + order.totalAmount);
+        holder.txtTotal.setText("Tổng: " + formatCurrency(order.totalAmount));
 
         // Format thời gian tạo
         String dateStr = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())

@@ -23,6 +23,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     private List<CartItem> cartItems;
     private final CartItemListener listener;
+    private String formatPrice(double price) {
+        return String.format("%,.0f", price).replace(',', '.') + " đ";
+    }
 
     public CartAdapter(List<CartItem> cartItems, CartItemListener listener) {
         this.cartItems = cartItems;
@@ -46,7 +49,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartItem item = cartItems.get(position);
         holder.name.setText(item.getName());
-        holder.price.setText(item.getPrice() + "đ");
+        holder.price.setText(formatPrice(item.getPrice()));
+
         holder.quantity.setText(String.valueOf(item.getQuantity()));
 
         Glide.with(holder.image.getContext())
