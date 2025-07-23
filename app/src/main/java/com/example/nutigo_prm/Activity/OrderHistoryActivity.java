@@ -32,7 +32,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
         db = AppDatabase.getInstance(this);
 
-        // Dùng background thread để lấy dữ liệu
+
         executor.execute(() -> {
             List<Order> orders = db.orderDao().getOrdersByUser(Constanst.user);
 
