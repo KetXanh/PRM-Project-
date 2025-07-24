@@ -37,4 +37,7 @@ public interface ProductDAO {
 
     @Query("SELECT * FROM Product WHERE name LIKE :name")
     LiveData<List<Product>> searchProductsByName(String name);
+    @Query("SELECT * FROM Product WHERE id = :id LIMIT 1")
+    Product getProductByIdSync(int id);
+
 }

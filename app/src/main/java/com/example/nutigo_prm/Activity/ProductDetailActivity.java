@@ -112,22 +112,30 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(v -> {
             productViewModel.getProductById(productId).observe(this, product -> {
                 if (product != null) {
-                    CartItem cartItem = new CartItem(
-                            product.getId(),
-                            product.getName(),
-                            product.getImage(),
-                            product.getPrice(),
-                            1
-                    );
+                    if (product.getStock() == 0) {
+                        Toast.makeText(this, "Sản phẩm đã hết hàng!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     new Thread(() -> {
                         AppDatabase db = AppDatabase.getInstance(getApplicationContext());
                         CartItem existing = db.cartDao().getCartItemByProductId(product.getId());
 
                         if (existing != null) {
+                            if (existing.quantity >= product.getStock()) {
+                                runOnUiThread(() -> Toast.makeText(this, "Không thể thêm quá số lượng tồn kho!", Toast.LENGTH_SHORT).show());
+                                return;
+                            }
                             existing.quantity += 1;
                             db.cartDao().updateCartItem(existing);
                         } else {
+                            CartItem cartItem = new CartItem(
+                                    product.getId(),
+                                    product.getName(),
+                                    product.getImage(),
+                                    product.getPrice(),
+                                    1
+                            );
                             db.cartDao().insertCartItem(cartItem);
                         }
 
@@ -138,6 +146,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
             });
         });
+
 
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnItemSelectedListener(item -> {

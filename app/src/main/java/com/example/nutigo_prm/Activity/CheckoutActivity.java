@@ -13,6 +13,7 @@ import com.example.nutigo_prm.DataHelper.Constanst;
 import com.example.nutigo_prm.Entity.CartItem;
 import com.example.nutigo_prm.Entity.Order;
 import com.example.nutigo_prm.Entity.OrderItem;
+import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
 
 import java.util.ArrayList;
@@ -63,6 +64,21 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 // Lấy tổng giá đơn hàng và insert vào DB
                 executor.execute(() -> {
+                    List<CartItem> cartItems = database.cartDao().getAllCartItems();
+
+                    // Kiểm tra số lượng từng sản phẩm so với tồn kho
+                    for (CartItem cartItem : cartItems) {
+                        Product product = database.productDao().getProductByIdSync(cartItem.productId);
+                        if (product == null) continue;
+
+                        if (cartItem.quantity > product.getStock()) {
+                            runOnUiThread(() -> {
+                                Toast.makeText(CheckoutActivity.this, "Số lượng sản phẩm '" + product.getName() + "' vượt quá tồn kho (" + product.getStock() + ").", Toast.LENGTH_LONG).show();
+                            });
+                            return; // Dừng không cho checkout
+                        }
+                    }
+
                     double totalAmount = database.cartDao().getCartTotal();
 
                     Order order = new Order();
@@ -78,8 +94,6 @@ public class CheckoutActivity extends AppCompatActivity {
                     long orderId = database.orderDao().insertOrder(order);
 
                     if (orderId > 0) {
-                        List<CartItem> cartItems = database.cartDao().getAllCartItems();
-
                         List<OrderItem> orderItems = new ArrayList<>();
                         for (CartItem cartItem : cartItems) {
                             OrderItem item = new OrderItem(
@@ -93,7 +107,16 @@ public class CheckoutActivity extends AppCompatActivity {
                             orderItems.add(item);
                         }
 
-                        database.orderItemDao().insertAll(orderItems); // cần khai báo insertAll trong DAO
+                        database.orderItemDao().insertAll(orderItems);
+
+                        for (OrderItem item : orderItems) {
+                            Product product = database.productDao().getProductByIdSync(item.productId);
+                            if (product != null) {
+                                int newStock = product.getStock() - item.quantity;
+                                if (newStock < 0) newStock = 0;
+                                database.productDao().updateStockById(item.productId, newStock);
+                            }
+                        }
 
                         database.cartDao().clearCart();
 
@@ -108,6 +131,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         });
                     }
                 });
+
 
             }
         });

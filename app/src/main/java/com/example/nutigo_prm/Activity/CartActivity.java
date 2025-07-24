@@ -44,7 +44,7 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
-                startActivityForResult(intent, 1); // ✅ để nhận kết quả sau khi checkout
+                startActivityForResult(intent, 1);
 
             }
         });
