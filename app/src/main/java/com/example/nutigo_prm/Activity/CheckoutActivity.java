@@ -66,7 +66,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 executor.execute(() -> {
                     List<CartItem> cartItems = database.cartDao().getAllCartItems();
 
-                    // Kiểm tra số lượng từng sản phẩm so với tồn kho
+
                     for (CartItem cartItem : cartItems) {
                         Product product = database.productDao().getProductByIdSync(cartItem.productId);
                         if (product == null) continue;
@@ -109,14 +109,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
                         database.orderItemDao().insertAll(orderItems);
 
-                        for (OrderItem item : orderItems) {
-                            Product product = database.productDao().getProductByIdSync(item.productId);
-                            if (product != null) {
-                                int newStock = product.getStock() - item.quantity;
-                                if (newStock < 0) newStock = 0;
-                                database.productDao().updateStockById(item.productId, newStock);
-                            }
-                        }
 
                         database.cartDao().clearCart();
 

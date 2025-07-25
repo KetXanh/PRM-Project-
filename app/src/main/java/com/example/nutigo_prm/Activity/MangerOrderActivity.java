@@ -12,8 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nutigo_prm.Adapter.ManagerOrder;
+import com.example.nutigo_prm.DataHelper.AppDatabase;
+import com.example.nutigo_prm.Entity.OrderItem;
+import com.example.nutigo_prm.Entity.Product;
 import com.example.nutigo_prm.R;
 import com.example.nutigo_prm.ViewModel.OrderViewModel;
+
+import java.util.List;
 
 public class MangerOrderActivity extends AppCompatActivity {
 
@@ -42,6 +47,22 @@ public class MangerOrderActivity extends AppCompatActivity {
         managerOrderAdapter.setOnStatusChangeListener((order, newStatus) -> {
             order.status = newStatus; // cập nhật trạng thái trong object
             orderViewModel.updateOrder(order); // gọi ViewModel để update DB
+            // Nếu trạng thái mới là Completed thì cập nhật tồn kho
+            if ("Completed".equals(newStatus)) {
+                new Thread(() -> {
+                    AppDatabase db = AppDatabase.getInstance(MangerOrderActivity.this);
+                    List<OrderItem> orderItems = db.orderItemDao().getOrderItems(order.id);
+
+                    for (OrderItem item : orderItems) {
+                        Product product = db.productDao().getProductByIdSync(item.productId);
+                        if (product != null) {
+                            int newStock = product.getStock() - item.quantity;
+                            if (newStock < 0) newStock = 0;
+                            db.productDao().updateStockById(item.productId, newStock);
+                        }
+                    }
+                }).start();
+            }
         });
 
         orderViewModel.getAllOrders().observe(this, orders -> {

@@ -13,6 +13,8 @@ import java.util.List;
 public interface OrderItemDao {
     @Query("SELECT * FROM order_items WHERE order_id = :orderId")
     LiveData<List<OrderItem>> getItemsByOrderId(int orderId);
+    @Query("SELECT * FROM order_items WHERE order_id = :orderId")
+    List<OrderItem> getOrderItems(int orderId);
 
     @Insert
     void insert(OrderItem orderItem);
